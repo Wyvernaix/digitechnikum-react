@@ -17,6 +17,9 @@ export function DocsPage() {
             <li><code>components/</code> enthält wiederverwendbare UI-Bausteine.</li>
             <li><code>models/task.ts</code> ist die zentrale Definition für Aufgaben und Prioritäten.</li>
             <li><code>data/</code> enthält die Startdaten getrennt von der App-Logik.</li>
+            <li><code>functions/</code> enthält reine Funktionen für Aufgabenänderungen und Navigation.</li>
+            <li><code>hooks/</code> enthält React-Logik wie Aufgaben-State und Seitenwechsel.</li>
+            <li><code>TaskActions</code> bündelt die gemeinsamen Callback-Typen für die UI.</li>
             <li><code>pages/</code> enthält die drei Seiten der Anwendung.</li>
             <li><code>context/</code> stellt den Theme Context bereit.</li>
             <li><code>styles/</code> enthält die nach Bereichen aufgeteilten CSS-Dateien.</li>
@@ -24,10 +27,11 @@ export function DocsPage() {
         </DocsCard>
 
         <DocsCard
-          description="Die Aufgaben werden zentral verwaltet und als Props an die passenden Komponenten weitergegeben."
+          description="Der Aufgaben-State und seine Aktionen sind in einem Hook gebündelt und werden als Props an die UI weitergegeben."
           title="Aufgabenverwaltung"
         >
           <ul>
+            <li><code>useTasks</code> verwaltet Aufgaben und die verfügbaren Aktionen.</li>
             <li>Neue Aufgaben können mit Titel und Priorität angelegt werden.</li>
             <li>Checkboxen ändern den Erledigt-Status einer Aufgabe.</li>
             <li>Mit „Löschen“ wird eine Aufgabe aus der Liste entfernt.</li>
@@ -43,7 +47,7 @@ export function DocsPage() {
             <code>TaskSection</code> erhält Aufgaben und Ereignisfunktionen von der
             Seite. Diese gibt sie an <code>TaskForm</code> und <code>TaskList</code>
             weiter. <code>TaskItem</code> stellt anschließend eine einzelne Aufgabe
-            dar.
+            dar. Die Seiten müssen die Aufgabenlogik nicht selbst implementieren.
           </p>
         </DocsCard>
 

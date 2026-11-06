@@ -1,4 +1,5 @@
 import type { MouseEvent, ReactNode } from 'react'
+import { navigateTo } from '../functions/navigation'
 
 type AppLinkProps = {
   href: string
@@ -19,8 +20,7 @@ export function AppLink({ href, children, className }: AppLinkProps) {
     }
 
     event.preventDefault()
-    window.history.pushState({}, '', href)
-    window.dispatchEvent(new PopStateEvent('popstate'))
+    navigateTo(href)
   }
 
   return (

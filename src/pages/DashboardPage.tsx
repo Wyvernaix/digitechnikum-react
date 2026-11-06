@@ -1,14 +1,11 @@
 import { PageHeader } from '../components/PageHeader'
 import { TaskSection } from '../components/TaskSection'
 import { TaskSummary } from '../components/TaskSummary'
-import type { Task, Priority } from '../models/task'
+import type { Task, TaskActions } from '../models/task'
 
-type DashboardPageProps = {
+type DashboardPageProps = TaskActions & {
   tasks: Task[]
   completedCount: number
-  onToggleTask: (id: number) => void
-  onDeleteTask: (id: number) => void
-  onAddTask: (title: string, priority: Priority) => void
 }
 
 export function DashboardPage({

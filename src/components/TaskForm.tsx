@@ -1,8 +1,8 @@
 import { useState, type FormEvent } from 'react'
-import { defaultPriority, priorities, type Priority } from '../models/task'
+import { defaultPriority, priorities, type NewTask, type Priority } from '../models/task'
 
 type TaskFormProps = {
-  onAddTask: (title: string, priority: Priority) => void
+  onAddTask: (taskData: NewTask) => void
 }
 
 export function TaskForm({ onAddTask }: TaskFormProps) {
@@ -13,7 +13,7 @@ export function TaskForm({ onAddTask }: TaskFormProps) {
     event.preventDefault()
     const trimmedTitle = title.trim()
     if (!trimmedTitle) return
-    onAddTask(trimmedTitle, priority)
+    onAddTask({ title: trimmedTitle, priority })
     setTitle('')
     setPriority(defaultPriority)
   }

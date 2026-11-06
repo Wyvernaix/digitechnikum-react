@@ -1,14 +1,11 @@
 import { AppLink } from './AppLink'
 import { TaskForm } from './TaskForm'
 import { TaskList } from './TaskList'
-import type { Priority, Task } from '../models/task'
+import type { Task, TaskActions } from '../models/task'
 
-type TaskSectionProps = {
+type TaskSectionProps = TaskActions & {
   tasks: Task[]
   showAllLink?: boolean
-  onToggleTask: (id: number) => void
-  onDeleteTask: (id: number) => void
-  onAddTask: (title: string, priority: Priority) => void
 }
 
 export function TaskSection({

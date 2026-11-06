@@ -1,12 +1,9 @@
 import { PageHeader } from '../components/PageHeader'
 import { TaskSection } from '../components/TaskSection'
-import type { Priority, Task } from '../models/task'
+import type { Task, TaskActions } from '../models/task'
 
-type TasksPageProps = {
+type TasksPageProps = TaskActions & {
   tasks: Task[]
-  onToggleTask: (id: number) => void
-  onDeleteTask: (id: number) => void
-  onAddTask: (title: string, priority: Priority) => void
 }
 
 export function TasksPage({ tasks, onToggleTask, onDeleteTask, onAddTask }: TasksPageProps) {

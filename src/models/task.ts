@@ -11,6 +11,12 @@ export type Task = {
 
 export type NewTask = Pick<Task, 'title' | 'priority'>
 
+export type TaskActions = {
+  onAddTask: (taskData: NewTask) => void
+  onToggleTask: (taskId: number) => void
+  onDeleteTask: (taskId: number) => void
+}
+
 export const defaultPriority: Priority = 'Mittel'
 
 export function createTask({ title, priority }: NewTask): Task {
