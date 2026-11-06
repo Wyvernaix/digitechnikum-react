@@ -1,6 +1,6 @@
-import { useTheme } from '../context/useTheme'
-import { routes, type Page } from '../routes'
-import { AppLink } from './AppLink'
+import { useTheme } from '../../context/useTheme'
+import { routes, type Page } from '../../routes'
+import { AppLink } from '../common/AppLink'
 
 type HeaderProps = {
   currentPage: Page
@@ -27,7 +27,7 @@ export function Header({ currentPage }: HeaderProps) {
             href={routes[link.page]}
             key={link.page}
           >
-              {link.label}
+            {link.label}
           </AppLink>
         ))}
         <button className="theme-button" onClick={toggleTheme} type="button">

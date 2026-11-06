@@ -7,6 +7,7 @@ export const routes: Record<Page, string> = {
 }
 
 export function getPageFromPath(pathname: string): Page {
+  // - Unbekannte Pfade landen bewusst auf der Übersicht.
   if (pathname === routes.tasks) return 'tasks'
   if (pathname === routes.docs) return 'docs'
   return 'dashboard'

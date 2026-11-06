@@ -1,7 +1,7 @@
-import { AppLink } from './AppLink'
+import { AppLink } from '../common/AppLink'
 import { TaskForm } from './TaskForm'
 import { TaskList } from './TaskList'
-import type { Task, TaskActions } from '../models/task'
+import type { Task, TaskActions } from '../../models/task'
 
 type TaskSectionProps = TaskActions & {
   tasks: Task[]

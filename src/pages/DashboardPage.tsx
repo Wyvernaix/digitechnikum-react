@@ -1,6 +1,6 @@
-import { PageHeader } from '../components/PageHeader'
-import { TaskSection } from '../components/TaskSection'
-import { TaskSummary } from '../components/TaskSummary'
+import { PageHeader } from '../components/common/PageHeader'
+import { TaskSection } from '../components/tasks/TaskSection'
+import { TaskSummary } from '../components/tasks/TaskSummary'
 import type { Task, TaskActions } from '../models/task'
 
 type DashboardPageProps = TaskActions & {

@@ -1,5 +1,5 @@
-import { DocsCard } from '../components/DocsCard'
-import { PageHeader } from '../components/PageHeader'
+import { DocsCard } from '../components/docs/DocsCard'
+import { PageHeader } from '../components/common/PageHeader'
 
 export function DocsPage() {
   return (
@@ -14,7 +14,11 @@ export function DocsPage() {
           title="Projektaufbau"
         >
           <ul>
-            <li><code>components/</code> enthält wiederverwendbare UI-Bausteine.</li>
+            <li><code>components/</code> ist nach UI-Verantwortungen in Unterordner geteilt.</li>
+            <li><code>components/common/</code> enthält allgemeine Bausteine wie <code>PageHeader</code>.</li>
+            <li><code>components/layout/</code> enthält App-Rahmen und Navigation.</li>
+            <li><code>components/tasks/</code> enthält die Aufgaben-UI.</li>
+            <li><code>components/docs/</code> enthält die Dokumentationskarten.</li>
             <li><code>models/task.ts</code> ist die zentrale Definition für Aufgaben und Prioritäten.</li>
             <li><code>data/</code> enthält die Startdaten getrennt von der App-Logik.</li>
             <li><code>functions/</code> enthält reine Funktionen für Aufgabenänderungen und Navigation.</li>

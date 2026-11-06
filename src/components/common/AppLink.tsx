@@ -1,5 +1,5 @@
 import type { MouseEvent, ReactNode } from 'react'
-import { navigateTo } from '../functions/navigation'
+import { navigateTo } from '../../functions/navigation'
 
 type AppLinkProps = {
   href: string

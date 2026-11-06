@@ -45,16 +45,11 @@ Danach ist die App normalerweise unter [http://localhost:5173](http://localhost:
 
 ```text
 src/
-├── components/       Wiederverwendbare React-Komponenten
-│   ├── AppLink.tsx
-│   ├── DocsCard.tsx
-│   ├── Header.tsx
-│   ├── PageHeader.tsx
-│   ├── TaskForm.tsx
-│   ├── TaskItem.tsx
-│   ├── TaskList.tsx
-│   ├── TaskSection.tsx
-│   └── TaskSummary.tsx
+├── components/       Nach Verantwortung gruppierte React-Komponenten
+│   ├── common/       Allgemein wiederverwendbare UI
+│   ├── docs/         Komponenten für die Projektdokumentation
+│   ├── layout/       App-Rahmen und Navigation
+│   └── tasks/        Aufgabenformular, Liste und Aufgabenanzeige
 ├── data/             Beispieldaten für den Start
 ├── functions/        Kleine, testbare Funktionen für Aufgaben und Navigation
 ├── hooks/             Wiederverwendbare React-Logik
@@ -94,3 +89,5 @@ Der `ThemeProvider` stellt das aktuelle Theme und die Funktion zum Wechseln übe
 ## Eigene Erweiterungen
 
 Die Datei [Challenges.md](./Challenges.md) enthält Aufgaben für den Workshop. Die Challenges sind in Stufen aufgeteilt und reichen von kleinen UI-Erweiterungen bis zu shadcn/ui.
+
+Die Datei [react-concepts.md](./react-concepts.md) erklärt 18 wichtige React-Konzepte anhand konkreter Dateien und Beispiele aus dieser App.

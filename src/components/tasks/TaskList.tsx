@@ -1,4 +1,4 @@
-import type { Task } from '../models/task'
+import type { Task } from '../../models/task'
 import { TaskItem } from './TaskItem'
 
 type TaskListProps = {

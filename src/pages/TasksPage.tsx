@@ -1,5 +1,5 @@
-import { PageHeader } from '../components/PageHeader'
-import { TaskSection } from '../components/TaskSection'
+import { PageHeader } from '../components/common/PageHeader'
+import { TaskSection } from '../components/tasks/TaskSection'
 import type { Task, TaskActions } from '../models/task'
 
 type TasksPageProps = TaskActions & {

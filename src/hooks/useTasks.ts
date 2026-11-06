@@ -9,11 +9,13 @@ import {
 import type { NewTask } from '../models/task'
 
 export function useTasks() {
+  // - Der Hook bündelt State und Aktionen für alle Aufgaben-Seiten.
   const [tasks, setTasks] = useState(initialTasks)
 
   const completedCount = useMemo(() => getCompletedTaskCount(tasks), [tasks])
 
   const handleAddTask = (taskData: NewTask) => {
+    // - Die eigentliche Änderung liegt in einer separaten, testbaren Funktion.
     setTasks((currentTasks) => addTask(currentTasks, taskData))
   }
 

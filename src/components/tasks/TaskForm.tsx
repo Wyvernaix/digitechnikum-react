@@ -1,5 +1,10 @@
 import { useState, type FormEvent } from 'react'
-import { defaultPriority, priorities, type NewTask, type Priority } from '../models/task'
+import {
+  defaultPriority,
+  priorities,
+  type NewTask,
+  type Priority,
+} from '../../models/task'
 
 type TaskFormProps = {
   onAddTask: (taskData: NewTask) => void
@@ -12,7 +17,10 @@ export function TaskForm({ onAddTask }: TaskFormProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const trimmedTitle = title.trim()
+
+    // - Leere Aufgaben werden nicht an den State weitergegeben.
     if (!trimmedTitle) return
+
     onAddTask({ title: trimmedTitle, priority })
     setTitle('')
     setPriority(defaultPriority)

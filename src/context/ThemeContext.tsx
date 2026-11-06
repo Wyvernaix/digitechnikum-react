@@ -5,6 +5,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>('light')
 
   useEffect(() => {
+    // - CSS-Variablen reagieren auf das Theme-Attribut am HTML-Element.
     document.documentElement.dataset.theme = theme
   }, [theme])
 
