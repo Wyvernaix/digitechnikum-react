@@ -1,8 +1,8 @@
-# Workshop-Challenges
+# Workshop-Ideen
 
-Diese Challenges bauen aufeinander auf. Du musst nicht jede Aufgabe vollständig nach Vorlage lösen. Nutze die Hinweise als Startpunkt, recherchiere die verwendeten APIs und entscheide selbst, wie du die Lösung strukturierst.
+Sind mehr Ideen als Challenges, kann man so und so sehen.
 
-## Vor jeder Challenge
+## Vor jeder Änderung
 
 1. Starte die App mit `npm run dev`.
 2. Lies zuerst die betroffenen Dateien und suche nach ähnlichen bestehenden Komponenten.
@@ -157,38 +157,48 @@ Danach kannst du zum Beispiel `formatDistanceToNow` in einer `TaskDate`-Komponen
 
 **Lernziel:** Abhängigkeiten installieren, prüfen und isoliert einsetzen.
 
-### 10. Animationen mit Motion
+### 10. Animationen mit Anime.js
 
-**Ziel:** Neue Aufgaben sollen ein- und gelöschte Aufgaben ausblenden.
+**Ziel:** Neue Aufgaben sollen einblenden und gelöschte Aufgaben ausblenden. Dafür verwendest du Anime.js direkt mit React-Refs und Effects.
 
 **Erste Schritte:**
 
-1. Installiere Motion: `npm install motion`.
-2. Öffne `TaskList` und ersetze testweise das äußere `li` in `TaskItem` durch `motion.li`.
-3. Ergänze `initial`, `animate` und `exit`.
-4. Umschließe die Liste mit `AnimatePresence`.
-5. Prüfe, ob `key={task.id}` stabil bleibt.
+1. Installiere Anime.js: `npm install animejs`.
+2. Ergänze in `TaskItem` einen `useRef<HTMLLIElement>(null)` für das Listenelement.
+3. Starte in einem `useEffect` eine Animation auf `element.current`, sobald die Komponente erscheint.
+4. Verwende für das Einblenden zum Beispiel `opacity`, `translateY` und `duration`.
+5. Für das Löschen brauchst du zuerst einen Ablauf, der die Animation abwartet und danach `onDelete` aufruft.
+6. Prüfe mit React Strict Mode, ob deine Animation sauber aufgeräumt wird.
 
 ```tsx
-import { AnimatePresence, motion } from 'motion/react'
+import { animate } from 'animejs'
+import { useEffect, useRef } from 'react'
 
-<AnimatePresence>
-  {tasks.map((task) => (
-    <motion.li
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, height: 0 }}
-      initial={{ opacity: 0, y: -8 }}
-      key={task.id}
-    >
-      {task.title}
-    </motion.li>
-  ))}
-</AnimatePresence>
+function AnimatedTaskItem() {
+  const itemRef = useRef<HTMLLIElement>(null)
+
+  useEffect(() => {
+    if (!itemRef.current) return
+
+    const animation = animate(itemRef.current, {
+      opacity: [0, 1],
+      translateY: [-8, 0],
+      duration: 300,
+      ease: 'out(3)',
+    })
+
+    return () => animation.pause()
+  }, [])
+
+  return <li ref={itemRef}>Eine Aufgabe</li>
+}
 ```
 
-**Achte darauf:** Animationen sind Zusatzverhalten. Die Liste muss ohne Animation weiterhin funktionieren.
+Anime.js 4 wird aus dem Paket `animejs` importiert. Für komplexere React-Komponenten kannst du `createScope` verwenden, damit Animationen auf einen Container begrenzt und beim Unmount mit `scope.revert()` aufgeräumt werden.
 
-**Lernziel:** Eine Library anhand ihrer Dokumentation integrieren und mit React-State verbinden.
+**Achte darauf:** Animationen sind Zusatzverhalten. Die Liste muss ohne Animation weiterhin funktionieren. Prüfe außerdem `prefers-reduced-motion`, damit Nutzer reduzierte Bewegung aktivieren können.
+
+**Lernziel:** Eine Library anhand ihrer Dokumentation integrieren, DOM-Elemente über Refs animieren und Animationen in React sauber aufräumen.
 
 ### 11. shadcn/ui einrichten
 
@@ -268,77 +278,3 @@ npm install -D vitest jsdom @testing-library/react @testing-library/jest-dom
 ```
 
 **Lernziel:** Verhalten aus Sicht der Nutzer testen.
-
-## Stufe 5 – Three.js und 3D
-
-### 16. Erste Three.js-Szene
-
-**Ziel:** Eine kleine 3D-Szene soll auf der Docs-Seite erscheinen.
-
-**Erste Schritte:**
-
-1. Installiere `npm install three @react-three/fiber @react-three/drei`.
-2. Erstelle `src/components/TaskScene.tsx`.
-3. Rendere zuerst nur einen Würfel in einem `Canvas`.
-4. Ergänze Licht und `OrbitControls`.
-5. Gib der Szene in `docs.css` eine feste Höhe, damit der Canvas sichtbar ist.
-
-```tsx
-import { Canvas } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
-
-export function TaskScene() {
-  return (
-    <Canvas camera={{ position: [3, 3, 3] }}>
-      <ambientLight intensity={1} />
-      <mesh>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color="#2563eb" />
-      </mesh>
-      <OrbitControls />
-    </Canvas>
-  )
-}
-```
-
-**Lernziel:** Eine externe Renderfläche als React-Komponente einbinden.
-
-### 17. Aufgaben visualisieren
-
-**Ziel:** Jede Aufgabe wird als eigenes 3D-Objekt dargestellt.
-
-**Erste Schritte:**
-
-1. Übergib `tasks` aus `DocsPage` an `TaskScene`.
-2. Erstelle eine `TaskObject`-Komponente mit einer `task`-Prop.
-3. Verwende `task.priority` für die Farbe und `task.completed` für Position oder Transparenz.
-4. Mappe die Aufgaben innerhalb der Szene und nutze `task.id` als Key.
-5. Halte die 3D-Darstellung getrennt von `TaskItem`.
-
-**Lernziel:** Das zentrale Task-Modell in einer weiteren Darstellung wiederverwenden.
-
-### 18. Interaktion und Bewegung
-
-**Ziel:** 3D-Aufgaben sollen auf Hover und Klick reagieren.
-
-**Erste Schritte:**
-
-1. Ergänze Pointer-Events an `TaskObject`.
-2. Speichere das aktuell ausgewählte Objekt im State der Szene.
-3. Verwende `useFrame` nur für kontinuierliche Bewegung.
-4. Ergänze eine reduzierte Darstellung für `prefers-reduced-motion`.
-
-**Lernziel:** Interaktive Render-Loops und zugängliche Animationen.
-
-## Abschluss-Challenge
-
-Baue eine eigene Version der App mit mindestens:
-
-- zentral erweitertem Task-Modell
-- persistentem Aufgaben-State über einen Custom Hook
-- Filtern und Bearbeiten von Aufgaben
-- einer Animation
-- mindestens einer shadcn/ui-Komponente
-- einer Docs-Karte, die deine Erweiterungen erklärt
-
-Optional kannst du eine API, Tests und eine Three.js-Visualisierung ergänzen.

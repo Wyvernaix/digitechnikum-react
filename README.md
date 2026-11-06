@@ -1,23 +1,19 @@
-# Meine Aufgaben – React Workshop
+# 07.11.2026 - Digitechnikum: React Workshop
 
-Eine kleine deutschsprachige Aufgaben-App als Ausgangspunkt für einen React-Workshop. Das Projekt zeigt grundlegende React-Konzepte in einer überschaubaren Anwendung und kann Schritt für Schritt erweitert werden.
+Eine kleine aber feine Aufgaben-App zum Experimentieren. </br>
+Das Projekt zeigt grundlegende React-Konzepte (sieh Präsentation)
 
 ## Voraussetzungen
-
 - Node.js 20 oder neuer
 - npm
-- Grundkenntnisse in JavaScript oder TypeScript
 
 ## Projekt starten
-
 Abhängigkeiten installieren:
-
 ```bash
 npm install
 ```
 
 Entwicklungsserver starten:
-
 ```bash
 npm run dev
 ```
@@ -36,13 +32,14 @@ Danach ist die App normalerweise unter [http://localhost:5173](http://localhost:
 ## Funktionen der App
 
 - Dashboard mit einer Zusammenfassung der Aufgaben
-- Aufgaben mit Titel und Priorität anlegen
+- Aufgaben mit Titel und einer Priorität anlegen
 - Aufgaben als erledigt markieren
 - Aufgaben löschen
 - Übersicht aller Aufgaben unter `/tasks`
-- Projektdokumentation unter `/docs`
+- "Projektdokumentation" unter `/docs`
 - Helles und dunkles Theme über einen React Context
 - Pfadbasierte Navigation ohne zusätzliche Router-Bibliothek
+  - Don't do this at home: React Router / eine Fullstack-Framework dazu gelieferte Variante ist die bessere Wahl für größere Apps
 
 ## Projektstruktur
 
@@ -59,11 +56,13 @@ src/
 │   ├── TaskSection.tsx
 │   └── TaskSummary.tsx
 ├── data/             Beispieldaten für den Start
+├── functions/        Kleine, testbare Funktionen für Aufgaben und Navigation
+├── hooks/             Wiederverwendbare React-Logik
 ├── models/           Zentrale Fachmodelle und Hilfsfunktionen
 ├── context/          Gemeinsamer Zustand für das Theme
 ├── pages/            Dashboard-, Aufgaben- und Docs-Seite
 ├── styles/           Nach Verantwortungsbereichen aufgeteilte CSS-Dateien
-├── App.tsx           App-Zustand und Zusammensetzen der Seiten
+├── App.tsx           Einstiegspunkt und Theme-Provider
 ├── routes.ts         Pfade und einfache Navigation
 └── main.tsx          React-Einstiegspunkt
 ```
@@ -78,9 +77,11 @@ Komponenten wie `TaskItem` und `DocsCard` können Daten über Props erhalten. Da
 
 Das Modell in `src/models/task.ts` ist die zentrale Stelle für `Task`, `Priority`, verfügbare Prioritäten und `createTask`. Komponenten importieren diese Definitionen, anstatt eigene Varianten zu erstellen. Neue Felder wie `category` oder `dueDate` werden zuerst im Modell ergänzt und können danach gezielt in Formular und Darstellung verwendet werden.
 
-### State
+### State und Aufgabenfunktionen
 
-Der Aufgaben-State liegt in `App.tsx`. Die Seiten lösen Aktionen aus, während `App` die Aufgaben tatsächlich hinzufügt, ändert oder entfernt. So gibt es eine zentrale Quelle für die Daten.
+Der Aufgaben-State und die Aktionen liegen im Hook `src/hooks/useTasks.ts`. Die reinen Änderungen an einem Aufgaben-Array liegen in `src/functions/taskFunctions.ts`. So bleiben UI, React-State und Fachlogik getrennt und können unabhängig erweitert oder getestet werden.
+
+Die gemeinsamen Callback-Typen liegen als `TaskActions` im Task-Modell. Wenn eine neue Aktion wie „Aufgabe bearbeiten“ dazukommt, kann ihr Typ dort ergänzt und anschließend gezielt an die betroffenen Komponenten weitergegeben werden.
 
 ### Context
 
@@ -92,4 +93,4 @@ Der `ThemeProvider` stellt das aktuelle Theme und die Funktion zum Wechseln übe
 
 ## Eigene Erweiterungen
 
-Die Datei [Challenges.md](./Challenges.md) enthält Aufgaben für den Workshop. Die Challenges sind in Stufen aufgeteilt und reichen von kleinen UI-Erweiterungen bis zu shadcn/ui, Animationen und einer Three.js-Szene.
+Die Datei [Challenges.md](./Challenges.md) enthält Aufgaben für den Workshop. Die Challenges sind in Stufen aufgeteilt und reichen von kleinen UI-Erweiterungen bis zu shadcn/ui.
