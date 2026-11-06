@@ -1,0 +1,344 @@
+# Workshop-Challenges
+
+Diese Challenges bauen aufeinander auf. Du musst nicht jede Aufgabe vollständig nach Vorlage lösen. Nutze die Hinweise als Startpunkt, recherchiere die verwendeten APIs und entscheide selbst, wie du die Lösung strukturierst.
+
+## Vor jeder Challenge
+
+1. Starte die App mit `npm run dev`.
+2. Lies zuerst die betroffenen Dateien und suche nach ähnlichen bestehenden Komponenten.
+3. Ändere das zentrale Modell in `src/models/task.ts`, wenn du neue Aufgabendaten brauchst.
+4. Teile die UI in kleine Komponenten auf, statt eine große Seite weiter wachsen zu lassen.
+5. Prüfe danach mit `npm run lint` und `npm run build`.
+
+## Stufe 1 – Grundlagen
+
+### 1. Aufgaben bearbeiten
+
+**Ziel:** Eine bestehende Aufgabe soll Titel und Priorität direkt in der Liste bearbeiten können.
+
+**Erste Schritte:**
+
+1. Ergänze in `TaskItem` einen Bearbeiten-Button.
+2. Erzeuge für den Bearbeitungsmodus lokale States für Titel und Priorität.
+3. Ergänze in `App.tsx` eine Funktion wie `updateTask(id, changes)`.
+4. Reiche diese Funktion über `TaskSection` und `TaskList` bis zu `TaskItem` weiter.
+5. Verwende für die Prioritätsauswahl `priorities` aus `src/models/task.ts`.
+
+**Achte darauf:** Die Anzeige und das Bearbeitungsformular sollten nicht gleichzeitig für dieselbe Aufgabe sichtbar sein.
+
+**Lernziel:** Controlled Inputs, Props und State-Updates mit `map`.
+
+### 2. Aufgaben filtern
+
+**Ziel:** Die Aufgabenliste soll zwischen „Alle“, „Offen“ und „Erledigt“ wechseln können.
+
+**Erste Schritte:**
+
+1. Erstelle eine kleine `TaskFilter`-Komponente mit drei Buttons.
+2. Lege den ausgewählten Filter zunächst in `TasksPage` ab.
+3. Berechne mit `filter` eine sichtbare Liste, ohne den eigentlichen Task-State zu verändern.
+4. Übergib nur die gefilterte Liste an `TaskList`.
+5. Zeige bei einer leeren Ergebnisliste einen passenden Text an.
+
+**Achte darauf:** Der Dashboard-Abschnitt kann weiterhin nur die ersten drei Aufgaben anzeigen; die Filter müssen nicht global sein.
+
+**Lernziel:** Abgeleiteten State und Komponenten-Kommunikation verstehen.
+
+### 3. Prioritäten sichtbar machen
+
+**Ziel:** Hoch, Mittel und Niedrig sollen visuell unterscheidbar sein.
+
+**Erste Schritte:**
+
+1. Ergänze in `TaskItem` eine Klasse aus dem Priority-Wert, zum Beispiel `priority-high`.
+2. Lege die Farben als Variablen in `src/styles/tasks.css` oder der Theme-Datei an.
+3. Füge eine kleine `PriorityLegend`-Komponente hinzu.
+4. Prüfe die Farben im hellen und dunklen Theme.
+
+**Achte darauf:** Nutze keine englischen Sonderwerte neben den zentralen Werten aus dem Modell.
+
+**Lernziel:** Dynamische Klassen und Theme-kompatibles CSS.
+
+### 4. Aufgaben speichern
+
+**Ziel:** Aufgaben sollen nach einem Neuladen erhalten bleiben.
+
+**Erste Schritte:**
+
+1. Lege einen Hook `src/hooks/useLocalStorage.ts` an.
+2. Starte den Hook mit `initialTasks` aus `src/data/initialTasks.ts`.
+3. Lies den gespeicherten Wert im Initializer des `useState`-Aufrufs.
+4. Speichere Änderungen in einem `useEffect`.
+5. Verwende einen festen Schlüssel wie `simple-tasks`.
+
+**Achte darauf:** Ungültiges JSON darf die Anwendung nicht zum Absturz bringen. Eine kleine Prüf- oder Fallback-Funktion ist sinnvoll.
+
+**Lernziel:** `useState`, `useEffect` und Browser-Speicher.
+
+## Stufe 2 – React und UI
+
+### 5. Kategorien ergänzen
+
+**Ziel:** Aufgaben bekommen eine Kategorie wie „Arbeit“, „Privat“ oder „Lernen“.
+
+**Erste Schritte:**
+
+1. Ergänze `Category` und `categories` in `src/models/task.ts`.
+2. Füge `category` zu `Task` und `NewTask` hinzu.
+3. Ergänze die Auswahl in `TaskForm`.
+4. Erweitere `createTask`, damit neue Aufgaben die Kategorie erhalten.
+5. Zeige die Kategorie in `TaskItem` an und ergänze danach einen Kategorienfilter.
+
+**Lernziel:** Ein Modell zentral erweitern und die betroffenen Props systematisch finden.
+
+### 6. Aufgabenlogik auslagern
+
+**Ziel:** `App.tsx` soll vor allem Seiten zusammensetzen und nicht jede State-Operation selbst enthalten.
+
+**Erste Schritte:**
+
+1. Erstelle `src/hooks/useTasks.ts`.
+2. Verschiebe dort den State und die Funktionen für Hinzufügen, Umschalten und Löschen.
+3. Gib aus dem Hook `tasks`, `completedCount` und die Aktionen zurück.
+4. Ersetze in `App.tsx` den bisherigen Aufgaben-State durch den Hook.
+5. Halte die Rückgabewerte des Hooks klein und eindeutig.
+
+**Lernziel:** Custom Hooks und Trennung von UI und Fachlogik.
+
+### 7. Tastaturbedienung und Accessibility
+
+**Ziel:** Die App soll ohne Maus und mit Screenreader verständlich bedienbar sein.
+
+**Erste Schritte:**
+
+1. Prüfe jedes interaktive Element mit der Tab-Taste.
+2. Ergänze sichtbare `:focus-visible`-Styles in `src/styles`.
+3. Verbinde Eingabefelder mit sichtbaren Labels oder passenden `aria-label`s.
+4. Füge für Statusmeldungen eine `aria-live="polite"`-Region hinzu.
+5. Teste eine leere Liste und eine lange Aufgabenbezeichnung.
+
+**Lernziel:** Semantisches HTML und zugängliche Zustandsänderungen.
+
+### 8. Formularvalidierung
+
+**Ziel:** Leere und zu lange Titel sollen verständlich abgelehnt werden.
+
+**Erste Schritte:**
+
+1. Definiere im Modell oder in `TaskForm` eine maximale Länge.
+2. Erstelle `validateTaskTitle(title)` als kleine Funktion.
+3. Halte die Fehlermeldung im Formular-State.
+4. Verbinde die Meldung über `aria-describedby` mit dem Input.
+5. Lass das Formular nur bei gültigen Werten `onAddTask` aufrufen.
+
+**Lernziel:** Validierungslogik, Fehlermeldungen und Formulare.
+
+## Stufe 3 – Libraries und UI-Werkzeuge
+
+### 9. Eine neue Library hinzufügen
+
+**Ziel:** Eine kleine Library kontrolliert in das Projekt integrieren.
+
+**Erste Schritte:**
+
+1. Wähle eine konkrete Aufgabe für die Library, zum Beispiel Datumsformatierung.
+2. Installiere sie mit `npm install paket-name`.
+3. Prüfe, ob die Library TypeScript-Typen mitbringt oder ein `@types/...`-Paket benötigt.
+4. Kapsle die Nutzung in einer kleinen Hilfsfunktion oder Komponente.
+5. Dokumentiere in der README, warum sie verwendet wird.
+
+Beispiel mit `date-fns`:
+
+```bash
+npm install date-fns
+```
+
+Danach kannst du zum Beispiel `formatDistanceToNow` in einer `TaskDate`-Komponente verwenden. Importiere nur die benötigte Funktion.
+
+**Lernziel:** Abhängigkeiten installieren, prüfen und isoliert einsetzen.
+
+### 10. Animationen mit Motion
+
+**Ziel:** Neue Aufgaben sollen ein- und gelöschte Aufgaben ausblenden.
+
+**Erste Schritte:**
+
+1. Installiere Motion: `npm install motion`.
+2. Öffne `TaskList` und ersetze testweise das äußere `li` in `TaskItem` durch `motion.li`.
+3. Ergänze `initial`, `animate` und `exit`.
+4. Umschließe die Liste mit `AnimatePresence`.
+5. Prüfe, ob `key={task.id}` stabil bleibt.
+
+```tsx
+import { AnimatePresence, motion } from 'motion/react'
+
+<AnimatePresence>
+  {tasks.map((task) => (
+    <motion.li
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, height: 0 }}
+      initial={{ opacity: 0, y: -8 }}
+      key={task.id}
+    >
+      {task.title}
+    </motion.li>
+  ))}
+</AnimatePresence>
+```
+
+**Achte darauf:** Animationen sind Zusatzverhalten. Die Liste muss ohne Animation weiterhin funktionieren.
+
+**Lernziel:** Eine Library anhand ihrer Dokumentation integrieren und mit React-State verbinden.
+
+### 11. shadcn/ui einrichten
+
+**Ziel:** Eine einzelne bestehende UI-Stelle durch eine anpassbare shadcn/ui-Komponente ersetzen.
+
+**Erste Schritte:**
+
+1. Lies die Installationshinweise für Vite und prüfe die aktuelle CLI-Version.
+2. Installiere die CLI: `npm install -D shadcn`.
+3. Initialisiere die Konfiguration: `npx shadcn@latest init`.
+4. Füge zunächst nur eine Komponente hinzu: `npx shadcn@latest add button`.
+5. Verwende sie zuerst für den Button „Aufgabe hinzufügen“.
+6. Prüfe danach die erzeugten Dateien und passe sie an die bestehenden CSS-Variablen an.
+
+`shadcn/ui` kopiert Komponenten in dein Projekt. Du lernst dadurch nicht nur eine API kennen, sondern kannst den erzeugten Code selbst verändern.
+
+**Lernziel:** Eine UI-Lösung konfigurieren, schrittweise einführen und an das Projekt anpassen.
+
+### 12. Dialog zum Bearbeiten
+
+**Ziel:** Das Bearbeitungsformular aus Challenge 1 soll in einem Dialog erscheinen.
+
+**Erste Schritte:**
+
+1. Installiere mit `npx shadcn@latest add dialog`.
+2. Erstelle `EditTaskDialog` als eigene Komponente.
+3. Übergib `task`, `open` und `onSave` über Props.
+4. Lass `TaskItem` nur das Öffnen des Dialogs auslösen.
+5. Halte die eigentliche Aktualisierung weiterhin im Aufgaben-Hook.
+
+**Lernziel:** Zusammengesetzte Komponenten und State-Grenzen.
+
+## Stufe 4 – Fortgeschrittene Features
+
+### 13. React Router
+
+**Ziel:** Die selbst gebaute Navigation durch einen Router ersetzen.
+
+**Erste Schritte:**
+
+1. Installiere `npm install react-router`.
+2. Lies `src/routes.ts` und übertrage die drei vorhandenen Pfade.
+3. Erstelle eine Router-Konfiguration mit Layout, Seiten und einer 404-Seite.
+4. Ersetze `AppLink` schrittweise durch `Link` oder `NavLink`.
+5. Entferne die alte `popstate`-Logik erst, wenn alle Links umgestellt sind.
+
+**Lernziel:** Routing, Layouts und aktive Navigationspunkte.
+
+### 14. Backend oder API
+
+**Ziel:** Aufgaben sollen von einer externen Datenquelle geladen und gespeichert werden.
+
+**Erste Schritte:**
+
+1. Entscheide dich zuerst zwischen einem Mock-Service und einer eigenen API.
+2. Erstelle eine kleine `taskApi.ts` mit `getTasks`, `createTask` und `deleteTask`.
+3. Ergänze im Hook `isLoading` und `error`.
+4. Zeige Lade- und Fehlerzustände in einer eigenen Komponente an.
+5. Aktualisiere die lokale Liste erst nach erfolgreicher Antwort.
+
+**Lernziel:** Async-Code, Fehlerzustände und eine klare API-Grenze.
+
+### 15. Tests
+
+**Ziel:** Die wichtigsten Interaktionen sollen automatisch überprüft werden.
+
+**Erste Schritte:**
+
+1. Installiere Vitest, `jsdom` und Testing Library.
+2. Teste zuerst `TaskForm`: gültige Eingabe, leere Eingabe und Priorität.
+3. Teste `TaskItem`: Checkbox und Löschbutton.
+4. Verschiebe wiederverwendbare State-Logik in `useTasks`, bevor du den Hook testest.
+5. Ergänze ein `test`-Script in `package.json`.
+
+```bash
+npm install -D vitest jsdom @testing-library/react @testing-library/jest-dom
+```
+
+**Lernziel:** Verhalten aus Sicht der Nutzer testen.
+
+## Stufe 5 – Three.js und 3D
+
+### 16. Erste Three.js-Szene
+
+**Ziel:** Eine kleine 3D-Szene soll auf der Docs-Seite erscheinen.
+
+**Erste Schritte:**
+
+1. Installiere `npm install three @react-three/fiber @react-three/drei`.
+2. Erstelle `src/components/TaskScene.tsx`.
+3. Rendere zuerst nur einen Würfel in einem `Canvas`.
+4. Ergänze Licht und `OrbitControls`.
+5. Gib der Szene in `docs.css` eine feste Höhe, damit der Canvas sichtbar ist.
+
+```tsx
+import { Canvas } from '@react-three/fiber'
+import { OrbitControls } from '@react-three/drei'
+
+export function TaskScene() {
+  return (
+    <Canvas camera={{ position: [3, 3, 3] }}>
+      <ambientLight intensity={1} />
+      <mesh>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color="#2563eb" />
+      </mesh>
+      <OrbitControls />
+    </Canvas>
+  )
+}
+```
+
+**Lernziel:** Eine externe Renderfläche als React-Komponente einbinden.
+
+### 17. Aufgaben visualisieren
+
+**Ziel:** Jede Aufgabe wird als eigenes 3D-Objekt dargestellt.
+
+**Erste Schritte:**
+
+1. Übergib `tasks` aus `DocsPage` an `TaskScene`.
+2. Erstelle eine `TaskObject`-Komponente mit einer `task`-Prop.
+3. Verwende `task.priority` für die Farbe und `task.completed` für Position oder Transparenz.
+4. Mappe die Aufgaben innerhalb der Szene und nutze `task.id` als Key.
+5. Halte die 3D-Darstellung getrennt von `TaskItem`.
+
+**Lernziel:** Das zentrale Task-Modell in einer weiteren Darstellung wiederverwenden.
+
+### 18. Interaktion und Bewegung
+
+**Ziel:** 3D-Aufgaben sollen auf Hover und Klick reagieren.
+
+**Erste Schritte:**
+
+1. Ergänze Pointer-Events an `TaskObject`.
+2. Speichere das aktuell ausgewählte Objekt im State der Szene.
+3. Verwende `useFrame` nur für kontinuierliche Bewegung.
+4. Ergänze eine reduzierte Darstellung für `prefers-reduced-motion`.
+
+**Lernziel:** Interaktive Render-Loops und zugängliche Animationen.
+
+## Abschluss-Challenge
+
+Baue eine eigene Version der App mit mindestens:
+
+- zentral erweitertem Task-Modell
+- persistentem Aufgaben-State über einen Custom Hook
+- Filtern und Bearbeiten von Aufgaben
+- einer Animation
+- mindestens einer shadcn/ui-Komponente
+- einer Docs-Karte, die deine Erweiterungen erklärt
+
+Optional kannst du eine API, Tests und eine Three.js-Visualisierung ergänzen.

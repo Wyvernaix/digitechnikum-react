@@ -1,0 +1,31 @@
+.app-shell {
+  min-height: 100vh;
+}
+
+.main-content {
+  width: min(1040px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 48px 0 64px;
+}
+
+.page-heading {
+  margin-bottom: 32px;
+}
+
+.page-heading h1 {
+  margin: 0 0 8px;
+  color: var(--heading);
+  font-size: clamp(2rem, 5vw, 3rem);
+  letter-spacing: -0.04em;
+}
+
+.page-heading p {
+  color: var(--text);
+}
+
+@media (max-width: 640px) {
+  .main-content {
+    width: min(100% - 32px, 1040px);
+    padding-top: 32px;
+  }
+}
